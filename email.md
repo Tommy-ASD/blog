@@ -995,7 +995,7 @@ Yeah, it looks like it should have permissions?
 Some more trail and error with permissions later, I tried the following;
 ```
 tommy@tommyasd:~$ sudo chmod 777 -R /etc/opendkim
-tommy@tommyasd:~$ echo "Test email with DKIM" | mail -s "DKIM Test" tommy.aleksander.sd@gmail.com
+tommy@tommyasd:~$ echo "Test email with DKIM" | mail -s "DKIM Test" redacted@gmail.com
 Dec 09 12:12:10 tommyasd.com opendkim[79293]: default._domainkey.tommyasd.com: key data is not secure: /etc/opendkim can be read or written by other users
 Dec 09 12:12:10 tommyasd.com opendkim[79293]: 25137A4A11D: error loading key 'default._domainkey.tommyasd.com'
 ```
@@ -1003,7 +1003,7 @@ Okay, it can finally read the file with 777 (read, write, execute) permissions, 
 
 ```
 tommy@tommyasd:~$ sudo chmod 666 -R /etc/opendkim
-tommy@tommyasd:~$ echo "Test email with DKIM" | mail -s "DKIM Test" tommy.aleksander.sd@gmail.com
+tommy@tommyasd:~$ echo "Test email with DKIM" | mail -s "DKIM Test" redacted@gmail.com
 Dec 09 12:12:32 tommyasd.com opendkim[79293]: can't load key from /etc/opendkim/keys/tommyasd.com/default.private: Permission denied
 Dec 09 12:12:32 tommyasd.com opendkim[79293]: 79988A4A12B: error loading key 'default._domainkey.tommyasd.com'
 ```
@@ -1011,7 +1011,7 @@ Hmmm, 666 permissions is failing? But literally everyone has read/write access. 
 
 ```
 tommy@tommyasd:~$ sudo chmod 700 -R /etc/opendkim
-tommy@tommyasd:~$ echo "Test email with DKIM" | mail -s "DKIM Test" tommy.aleksander.sd@gmail.com
+tommy@tommyasd:~$ echo "Test email with DKIM" | mail -s "DKIM Test" redacted@gmail.com
 Dec 09 12:12:44 tommyasd.com opendkim[79293]: 90BEBA4A12D: DKIM-Signature field added (s=default, d=tommyasd.com)
 ```
 OH SHIT. It worked? It fucking worked?? Missing execute permissions was the problem the entire time??
@@ -1025,4 +1025,3 @@ tommy@tommyasd:~$
 ![DKIM worked!!!!](dkimsuccess!!.png)
 
 IT FINALLY FUCKING WORKED! After all this time, DKIM signing is working!! Jesus that took a while, but we're done! Hell yeah!
-
